@@ -671,31 +671,33 @@ def follow_path(path):
               2: c_plusplus_icon,
               3: c_sharp_icon,
               4: javascript_icon}
+    scores = {0: 0,
+             1: 0,
+             2: 0,
+             3: 0,
+             4: 0}
     for step in path:
         if step[0] == 'Start':
             turtle.goto(locations[step[1]])
             tokens[step[2]]()
+            scores[step[2]] += 1
         else:
             turtle.setheading(headings[step[0]])
             turtle.forward(step[1]*100)
             tokens[step[2]]()
-            '''
-    turtle.goto([50, 50])
-    turtle.dot(50)
-    tokens[0]()
-    turtle.goto([650, 50])
-    turtle.dot(50)
-    tokens[1]()
-    turtle.goto([350, 350])
-    turtle.dot(50)
-    tokens[2]()
-    turtle.goto([50, 650])
-    turtle.dot(50)
-    tokens[3]()
-    turtle.goto([650, 650])
-    turtle.dot(50)
-    tokens[4]()
-    '''
+            scores[step[2]] += 1
+    score_location = [1000, 500]
+    # Add score values to legend
+    for score in scores.values():
+        turtle.color('slate grey')
+        turtle.goto(score_location[0], score_location[1]-25)
+        turtle.write(score, align = 'left',
+          font=('Arial', 24, 'normal'))
+        score_location[1] -= 100
+    # Add total score
+    turtle.goto(score_location)
+    turtle.write(sum(scores.values()), align = 'left', font=('Arial', 24, 'normal'))
+
 #
 #--------------------------------------------------------------------#
 
