@@ -164,7 +164,7 @@ def create_drawing_canvas():
     turtle.write('       Languages', align = 'left',
           font=('Arial', 24, 'normal'))
     tokens = {'python': python_icon,
-              'C': c_icon,
+              'Ruby': ruby_icon,
               'C++': c_plusplus_icon,
               'C#': c_sharp_icon,
               'JS': javascript_icon}
@@ -404,7 +404,6 @@ def python_icon(coord='loc', heading=180):
     '''
     if coord == 'loc':
         coord = turtle.pos()
-    home = coord
     turtle.penup()
     colours = ['yellow', 'blue']
     turtle.pencolor('white')
@@ -444,7 +443,7 @@ def python_icon(coord='loc', heading=180):
         turtle.dot(5)
         turtle.goto(coord)
         heading += 180
-    turtle.goto(home)
+    turtle.goto(coord)
 
 def hexagon(coord, colours, heading=210):
     '''
@@ -551,37 +550,84 @@ def hash_icon(coord, heading=0):
         heading += 90
         turtle.goto(coord[0] + width, coord[1] - (5 * (width/2)))
 
-def c_icon(coord='loc', heading=0):
+def ruby_icon(coord='loc', heading=0):
     '''
     coord: list of two elements, x and y
-    draws the C programming icon centered on coord
+    draws the Ruby programming icon centered on coord
     Heading variable is just to cover for future rotation if required
     Uses turtles current position unless otherwise set
     '''
     if coord == 'loc':
         coord = turtle.pos()
-    home = coord
-    colours = ['grey', 'silver']
-    hexagon(coord, colours)
-    letter_c(coord)
-    turtle.goto(home)
+    turtle.penup()
+    turtle.goto(coord)
+    turtle.color('red')
+    # Move to left center edge of ruby
+    turtle.setheading(heading+90)
+    turtle.forward(20)
+    turtle.left(90)
+    turtle.forward(40)
+    # Create background shape
+    turtle.setheading(heading+60)
+    turtle.begin_fill()
+    turtle.forward(36)
+    turtle.right(60)
+    turtle.forward(44)
+    turtle.right(60)
+    turtle.forward(36)
+    turtle.right(60)
+    turtle.forward(80)
+    turtle.right(120)
+    turtle.forward(80)
+    turtle.end_fill()
+    # Create top left off-colored area
+    turtle.color('crimson')
+    turtle.setheading(heading+60)
+    turtle.begin_fill()
+    for half in range(2):
+        turtle.forward(36)
+        turtle.right(60)
+        turtle.forward(22)
+        turtle.right(120)
+    turtle.end_fill()
+    # Goto right center edge of rube and create top right off-colored area
+    turtle.setheading(heading)
+    turtle.forward(80)
+    turtle.left(120)
+    turtle.begin_fill()
+    for half in range(2):
+        turtle.forward(36)
+        turtle.left(60)
+        turtle.forward(22)
+        turtle.left(120)
+    turtle.end_fill()
+    # Create middle bottom off-colored area
+    turtle.setheading(heading+180)
+    turtle.forward(22)
+    turtle.begin_fill()
+    turtle.forward(36)
+    turtle.left(104.4)
+    turtle.forward(72)
+    turtle.left(151.2)
+    turtle.forward(72)
+    turtle.end_fill()
+    turtle.goto(coord)
 
 def c_plusplus_icon(coord='loc', heading=0):
     '''
     coord: list of two elements, x and y
-    draws the C programming icon centered on coord
+    draws the C++ programming icon centered on coord
     Heading variable is just to cover for future rotation if required
     Uses turtles current position unless otherwise set
     '''
     if coord == 'loc':
         coord = turtle.pos()
-    home = coord
     colours = ['royal blue', 'blue']
     hexagon(coord, colours)
     letter_c(coord)
     plus_icon([coord[0] + 18, coord[1]])
     plus_icon([coord[0] + 30, coord[1]])
-    turtle.goto(home)
+    turtle.goto(coord)
 
 def c_sharp_icon(coord='loc', heading=0):
     '''
@@ -592,12 +638,11 @@ def c_sharp_icon(coord='loc', heading=0):
     '''
     if coord == 'loc':
         coord = turtle.pos()
-    home = coord
     colours = ['dark orchid', 'purple']
     hexagon(coord, colours)
     letter_c(coord)
     hash_icon([coord[0] + 22, coord[1] + 3])
-    turtle.goto(home)
+    turtle.goto(coord)
 
 def javascript_icon(coord='loc', heading=0):
     '''
@@ -608,7 +653,6 @@ def javascript_icon(coord='loc', heading=0):
     '''
     if coord == 'loc':
         coord = turtle.pos()
-    home = coord
     turtle.width(2)
     turtle.penup()
     turtle.pencolor('black')
@@ -646,7 +690,7 @@ def javascript_icon(coord='loc', heading=0):
     turtle.circle(10, extent=210)
     turtle.circle(-10, extent=210)
     turtle.penup()
-    turtle.goto(home)
+    turtle.goto(coord)
 
 #-----Student's Solution---------------------------------------------#
 #
@@ -667,7 +711,7 @@ def follow_path(path):
                 'North': 90,
                 'South': 270}
     tokens = {0: python_icon,
-              1: c_icon,
+              1: ruby_icon,
               2: c_plusplus_icon,
               3: c_sharp_icon,
               4: javascript_icon}
