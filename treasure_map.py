@@ -166,7 +166,7 @@ def create_drawing_canvas():
     tokens = {'python': python_icon,
               'Ruby': ruby_icon,
               'C++': c_plusplus_icon,
-              'C#': c_sharp_icon,
+              'R': r_icon,
               'JS': javascript_icon}
     icon_location = [810, 500]
     for name, token in tokens.items():
@@ -174,8 +174,7 @@ def create_drawing_canvas():
         token()
         turtle.color('slate grey')
         turtle.goto(icon_location[0]+60, icon_location[1]-25)
-        turtle.write(name, align = 'left',
-          font=('Arial', 24, 'normal'))
+        turtle.write(name, align = 'left', font=('Arial', 24, 'normal'))
         icon_location[1] -= 100
 
     # Reset everything ready for the student's solution
@@ -522,34 +521,6 @@ def plus_icon(coord, heading=0):
             turtle.right(90)
     turtle.end_fill()
 
-def hash_icon(coord, heading=0):
-    '''
-    coord: list of two elements, x and y
-    draws a white # starting at top left point
-    Heading variable is just to cover for future rotation if required
-    '''
-    turtle.speed('fastest')
-    turtle.penup()
-    turtle.pencolor('white')
-    turtle.fillcolor('white')
-    width = 5
-    side = 2*width+(3*(width/2))
-    turtle.width(width)
-    turtle.goto(coord)
-    for half in range(2):
-        turtle.setheading(heading)
-        turtle.pendown()
-        turtle.forward(side)
-        turtle.penup()
-        turtle.right(90)
-        turtle.forward(width*1.5)
-        turtle.right(90)
-        turtle.pendown()
-        turtle.forward(side)
-        turtle.penup()
-        heading += 90
-        turtle.goto(coord[0] + width, coord[1] - (5 * (width/2)))
-
 def ruby_icon(coord='loc', heading=0):
     '''
     coord: list of two elements, x and y
@@ -629,19 +600,50 @@ def c_plusplus_icon(coord='loc', heading=0):
     plus_icon([coord[0] + 30, coord[1]])
     turtle.goto(coord)
 
-def c_sharp_icon(coord='loc', heading=0):
+def oval_shape(coord, radius, color, heading=0):
+    '''
+    ccor: list of two elements, x and y
+    draws an oval (horizontal) top right corner at coord
+    Heading variable is just to cover for future rotation if required
+    '''
+    turtle.setheading(heading)
+    turtle.goto(coord)
+    # Move to right edge of oval and draw
+    turtle.forward(radius/2)
+    turtle.right(225)
+    turtle.color(color)
+    turtle.begin_fill()
+    for half in range(2):
+        turtle.circle(radius, extent=90)
+        turtle.circle(radius/2, extent=90)
+    turtle.end_fill()
+    turtle.goto(coord)
+
+def r_icon(coord='loc', heading=0):
     '''
     coord: list of two elements, x and y
-    draws the C programming icon centered on coord
+    draws the R programming icon centered on coord
     Heading variable is just to cover for future rotation if required
     Uses turtles current position unless otherwise set
     '''
     if coord == 'loc':
         coord = turtle.pos()
-    colours = ['dark orchid', 'purple']
-    hexagon(coord, colours)
-    letter_c(coord)
-    hash_icon([coord[0] + 22, coord[1] + 3])
+    # Draw background square
+    turtle.goto([coord[0]+50, coord[1]+50])
+    turtle.color('white')
+    turtle.setheading(heading)
+    turtle.begin_fill()
+    for side in range(4):
+        turtle.right(90)
+        turtle.forward(100)
+    turtle.end_fill()
+    # Draw overlapping ovals
+    oval_shape([coord[0]+15, coord[1]+25], 50, 'grey')
+    oval_shape([coord[0]+15, coord[1]+15], 25, 'white')
+    # Whrite blue R in bototm right corner
+    turtle.goto([coord[0], coord[1]-60])
+    turtle.color('blue')
+    turtle.write('R', align = 'left', font=('Arial', 48, 'bold'))
     turtle.goto(coord)
 
 def javascript_icon(coord='loc', heading=0):
@@ -713,7 +715,7 @@ def follow_path(path):
     tokens = {0: python_icon,
               1: ruby_icon,
               2: c_plusplus_icon,
-              3: c_sharp_icon,
+              3: r_icon,
               4: javascript_icon}
     scores = {0: 0,
              1: 0,
@@ -770,7 +772,7 @@ turtle.tracer(True)
 # Give the drawing canvas a title
 # ***** Replace this title with a description of your solution's theme
 # ***** and its tokens
-turtle.title("Programming Languages [Python, C, C++, C#, JS]")
+turtle.title("Programming Languages [Python, Ruby, C++, R, JS]")
 
 ### Call the student's function to follow the path
 ### ***** While developing your program you can call the follow_path
